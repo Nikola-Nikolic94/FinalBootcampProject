@@ -1,7 +1,6 @@
 package pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -35,7 +34,6 @@ public class LocationPopUpPage extends BasicPage{
 	public void settingUpLocation(String locationName) {
 		getKeyword().click();
 		String valueData = getLocationInput().getAttribute("data-value");
-		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].value=arguments[1]", getLocationInput(), valueData);
 		js.executeScript("arguments[0].click()", getSubmit());
 	}
