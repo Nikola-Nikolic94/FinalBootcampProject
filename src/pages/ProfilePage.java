@@ -3,6 +3,8 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 
 public class ProfilePage extends BasicPage{
 	
@@ -25,31 +27,34 @@ public class ProfilePage extends BasicPage{
 	public WebElement getZipCode() {
 		return driver.findElement(By.name("user_zip"));
 	}
-	public WebElement getCountry() {
-		return driver.findElement(By.name("user_country_id"));
+	public Select getCountry() {
+		return new Select (driver.findElement(By.name("user_country_id")));
 	}
-	public WebElement getState() {
-		return driver.findElement(By.name("user_state_id"));
+	public Select getState() {
+		return new Select (driver.findElement(By.name("user_state_id")));
 	}
-	public WebElement getCity() {
-		return driver.findElement(By.name("user_city"));
+	public Select getCity() {
+		return new Select (driver.findElement(By.name("user_city")));
 	}
 	public WebElement getSaveBtn() {
 		return driver.findElement(By.xpath("//div[@class='row']//input[@name='btn_submit']"));
 	}
-	public WebElement getUploadBtn() {
-		return driver.findElement(By.xpath("//*[@title='Upload']"));
-	}
-	public WebElement getUpload() {
-		js.executeScript("arguments[0].click()", getUploadBtn());
-		return driver.findElement(By.xpath("//input[@type='file']"));
-	}
-	public void uploadPicture(String path) {
-		getUpload().sendKeys(path);	
+	public void uploadPicture(String path) throws InterruptedException {
+		Actions action = new Actions(driver);
+		WebElement we = driver.findElement(By.className("avatar"));
+		action.moveToElement(we).build().perform();
+		Thread.sleep(1000);
+		WebElement btn = driver.findElement(By.xpath("//a[@title='Uplaod']"));
+		js.executeScript("arguments[0].click()", btn);
+		driver.findElement(By.xpath("//input[@type='file']")).sendKeys(path);
+		
 	}
 	public void removePicture() {
 		WebElement remove = driver.findElement(By.xpath("//*[@title='Remove']"));
 		js.executeScript("arguments[0].click()", remove);
+	}
+	public String getAlertMsgText() {
+		return driver.findElement(By.className("content")).getText();
 	}
 	public void settingChangingUserInfo(String firstName,
 										String lastName,
@@ -58,16 +63,23 @@ public class ProfilePage extends BasicPage{
 										String zipCode,
 										String country,
 										String state,
-										String city) {
-		
+										String city) throws InterruptedException {
+		getFirstName().clear();
 		getFirstName().sendKeys(firstName);
+		getLastName().clear();
 		getLastName().sendKeys(lastName);
+		getAddress().clear();
 		getAddress().sendKeys(address);
+		getPhoneNumber().clear();
 		getPhoneNumber().sendKeys(phoneNumber);
+		getZipCode().clear();
 		getZipCode().sendKeys(zipCode);
-		getCountry().sendKeys(country);
-		getState().sendKeys(state);
-		getCity().sendKeys(city);
-		getSaveBtn().click();
+		getCountry().selectByVisibleText(country);
+		Thread.sleep(1000);
+		getState().selectByVisibleText(state);
+		Thread.sleep(1000);
+		getCity().selectByVisibleText(city);
+		Thread.sleep(1000);
+		js.executeScript("arguments[0].click()", getSaveBtn());
 	}
 }
