@@ -18,11 +18,12 @@ public class LoginPage extends BasicPage{
 	public WebElement getSubmit() {
 		return driver.findElement(By.name("btn_submit"));
 	}
-	public void SignIn(String email, String password) {
+	public void SignIn(String email, String password) throws InterruptedException {
 		getUsername().clear();
 		getPassword().clear();
 		getUsername().sendKeys(email);
 		getPassword().sendKeys(password);
+		Thread.sleep(2000);
 		getSubmit().click();
 	}
 }
