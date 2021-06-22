@@ -19,6 +19,6 @@ public class NotificationSystemPage extends BasicPage{
 	}
 	public void waitUntilMsgDisappears() {
 		WebDriverWait wait = new WebDriverWait(driver,30);
-		wait.until(ExpectedConditions.attributeContains(getAlertMsg(), "style", "display:none"));
+		wait.until(ExpectedConditions.attributeContains(getAlertMsg(), "style", "display: none"));
 	}
 }
