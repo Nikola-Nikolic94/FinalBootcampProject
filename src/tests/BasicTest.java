@@ -3,6 +3,7 @@ package tests;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -81,10 +82,12 @@ public abstract class BasicTest {
 	public void cleanup(ITestResult result) throws IOException {
 		String location = "./Screenshots/";
 		String methodName = result.getName();
+		Date d = new Date();	
+		String dateString = d.toString().replace(":", "_").replace(" ", "_");
 		if(ITestResult.FAILURE==result.getStatus()) {
 			try {
 				File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-				Files.copy(srcFile, new File(location + methodName + "_" + ".png"));
+				Files.copy(srcFile, new File(location + methodName + "_" + dateString + ".png"));
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
