@@ -15,8 +15,9 @@ public class AuthPage extends BasicPage{
 	public WebElement getLogoutBtn() {
 		return driver.findElement(By.xpath("//div[@class='my-account-dropdown']/ul/li[2]"));
 	}
-	public void Logout() {
+	public void Logout() throws InterruptedException {
 		getLogoutDropDown().click();
+		Thread.sleep(1000);
 		getLogoutBtn().click();
 	}
 }
